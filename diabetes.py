@@ -23,7 +23,10 @@ plt.scatter(x,y)
 plt.show()
 #Co relation Matrix 
 df.corr()
-
-colors={'yes':'red','no':'green'}
-colors=['yes']
+#Adding Colors
+colors={1:'red',0:'green'}
+#Getting color to the scattered graphs
 plt.scatter(x,y, c=z.apply(lambda x:colors[x]))
+plt.xlabel('Glucose')
+plt.ylabel('BMI')
+plt.show()
