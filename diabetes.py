@@ -65,3 +65,20 @@ train
 test
 df.boxplot(by="Outcome",figsize=(12,10))
 sns.FacetGrid(df,size=6).map(sns.kdeplot,"Glucose").add_legend()
+
+#Joint Plot
+sns.jointplot(x="Glucose",y="BMI",data=df,size=5)
+
+#Bin Variables after Rules are discovered 
+#Rule 1: Outcome is 1 if 30<BMI<=40
+#Rule 2: Outcome is 1 if 120<Glucose<=170
+df['BMIBin'] = np.where(df['BMI'] <30,'<30', (np.where(df['BMI'] >= 40 ,'>=40','30-40')))
+df['GlucoseBin'] = np.where(df['Glucose'] <120,'<120', (np.where(df['Glucose'] >= 170 ,'>=170','120-170')))
+
+#create Pivot Table on training data
+pd.pivot_table(train, values="BMI", index=["BMIBin"], columns="Outcome", aggfunc = "count",fill_value=0)
+pd.pivot_table(train, values="Glucose", index=["GlucoseBin"], columns="Outcome", aggfunc = "count",fill_value=0)
+
+#create Pivot Table on test data
+pd.pivot_table(test, values="BMI", index=["BMIBin"], columns="Outcome", aggfunc = "count",fill_value=0)
+pd.pivot_table(test, values="Glucose", index=["GlucoseBin"], columns="Outcome", aggfunc = "count",fill_value=0)
